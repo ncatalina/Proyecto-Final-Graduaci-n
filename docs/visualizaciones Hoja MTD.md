@@ -119,8 +119,36 @@ Fabs(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFech
         Centro, Material, ProductoMovimiento)))
 ```
 
+### Top 10 centros con mayores descuadres absolutos
 
+#### Columna: Centro
 
+```qlik
+=Centro
+```
+
+#### Columna: Cantidad absoluta
+
+```qlik
+=Sum(Aggr(IF((Fabs(Sum({1<[Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"}>} Cantidad)) >= 0.05),
+     Fabs(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad)) ),
+        Centro, Material, ProductoMovimiento))
+```
+
+#### Columna: Cantidad 
+
+```qlik
+=Sum(Aggr(IF((Fabs(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"}>} Cantidad)) >= 0.05),
+     Sum({1<[Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"}>} Cantidad)), Centro))
+```
+
+#### Columna: Motivo del descuadre
+
+```qlik
+=If(Sum(Cantidad) > 0, 'Liquidación pendiente',
+  If(Sum(Cantidad) < 0, 'Recompra pendiente',
+    'Saldo Cero / Inactivo'))
+```
 
 
 
