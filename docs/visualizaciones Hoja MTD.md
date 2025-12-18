@@ -72,3 +72,59 @@ Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaxi
 =Count( DISTINCT IF( Fabs(Aggr(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"}>} Cantidad),
                 Centro, ProductoMovimiento)) >= 0.05, Centro))
 ```
+## 3. Tablas
+
+### Descuadres por Producto Copec:
+Este indicador cuenta los centros que presentan una desviación mayor o igual a 0.05
+
+#### Columna: Producto Copec
+
+```qlik
+=If(IsNull([ProductoMovimiento]) or Len(Trim([ProductoMovimiento]))=0, 'EN BLANCO', [ProductoMovimiento])
+```
+
+#### Columna: Cantidad
+
+```qlik
+=Sum(Aggr(IF((Fabs( Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad) ) >= 0.05),
+           Sum({1<[Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad) ),
+       Centro, ProductoMovimiento))
+```
+
+#### Columna: Cantidad absoluta
+
+```qlik
+=Sum(Aggr(IF((Fabs(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad)) >= 0.05),
+          Fabs(Sum({1<[Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad))),
+       Centro, Material, ProductoMovimiento))
+```
+
+#### Columna: Last 14 days
+
+```qlik
+=Sum(Aggr(IF((Fabs(Sum({1< [Fecha Contable] = {">=$(=Date(vFechaMaximaDatos - 13)) <=$(=Date(vFechaMaximaDatos))"}>} Cantidad)) >= 0.05),
+            Sum({1< [Fecha Contable] = {">=$(=Date(vFechaMaximaDatos - 13)) <=$(=Date(vFechaMaximaDatos))"}>} Cantidad)),
+        Centro, ProductoMovimiento))
+```
+
+#### Columna: % of total
+
+```qlik
+=(Sum(Aggr(IF(Fabs(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad)) >= 0.05,
+Fabs(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad))),
+            Centro, Material, ProductoMovimiento)))
+/
+(Sum(TOTAL Aggr(IF(Fabs(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad)) >= 0.05,
+            Fabs(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad))),
+        Centro, Material, ProductoMovimiento)))
+```
+
+
+
+
+
+
+
+
+
+
