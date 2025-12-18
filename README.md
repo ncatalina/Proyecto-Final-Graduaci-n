@@ -8,19 +8,18 @@ Este repositorio contiene el desarrollo técnico de un Dashboard en Qlik Sense d
 
 ## 📊 Visualización del Dashboard
 Aquí puedes ver cómo luce el producto final:
-
-![Pantalla Principal](imagenes/hoja1.png)
-*Figura 1: Vista general del análisis de descuadres mensuales.*
+* [📄 Ver Hoja Mensual (MTD)](imagenes/Dashboard%20Descuadres%20-%20Hoja%20MTD.pdf)
+* [📄 Ver Hoja Histórica](imagenes/Dashboard%20Descuadres-%20Hoja%20Historico.pdf)
+* [📄 Ver Detalle 30 Días](imagenes/Dashboard%20Descuadres%20-%20Detalle.pdf)
 
 ---
 
 ## 📂 Documentación Técnica y Fórmulas
 Para facilitar la revisión, la lógica de cálculo (Set Analysis y Aggr) se ha dividido según las hojas del dashboard:
 
-* [📖 Detalle Análisis Mensual](docs/visualizaciones_mensual.md): Fórmulas de KPIs y tablas de la hoja mensual.
-* [📖 Detalle Análisis Histórico](docs/visualizaciones_historico.md): Lógica de tendencias y acumulados.
-* [📖 Detalle 30 Días Móviles](docs/visualizaciones_detalles.md): Alertas de consecutividad y lógica de monitoreo diario.
-
+* [📖 Detalle Análisis Mensual](docs/visualizaciones%20Hoja%20MTD.md) 
+* [📖 Detalle Análisis Histórico](docs/visualizaciones%20Hoja%20Histórico.md)
+* [📖 Detalle 30 Días Móviles](docs/visualizaciones%20Hoja%20Destalles%20de%20descuadres%20últimos%2030%20días%20móviles.md)
 ---
 
 ## ⚙️ Tecnologías Utilizadas
