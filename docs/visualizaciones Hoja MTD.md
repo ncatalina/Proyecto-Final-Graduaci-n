@@ -1,6 +1,17 @@
 # Códigos de visualizaciones - Dashboard Descuadres - Hoja Descuadre mensual
 En este archivo se detallan las expresiones de Qlik Sense utilizadas para las visualizaciones.
 
+## 0. Filtros
+### Producto Copec
+
+```qlik
+=ProductoMovimiento
+```
+### Material
+
+```qlik
+=Material
+```
 ## 1. KPIs Principales
 
 ### Fecha de datos
