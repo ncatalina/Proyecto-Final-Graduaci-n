@@ -3,6 +3,12 @@ En este archivo se detallan las expresiones de Qlik Sense utilizadas para las vi
 
 ## 1. KPIs Principales
 
+### Fecha de datos
+
+```qlik
+='Datos hasta: ' & vFechaMaximaDatos
+```
+
 ### Centros descuadrados:
 Este indicador cuenta los centros que presentan una desviación mayor o igual a 0.05
 ```qlik
