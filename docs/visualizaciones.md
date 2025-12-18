@@ -57,3 +57,18 @@ Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaxi
 =Count( DISTINCT IF( Fabs( Aggr( Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"}>} Cantidad),
          Centro )) >= 0.05, Centro))
 ```
+
+### Centros descuadrados por producto Copec:
+
+#### Dimensión
+
+ ``` qlik
+=ProductoMovimiento
+```
+
+#### Medida
+
+ ``` qlik
+=Count( DISTINCT IF( Fabs(Aggr(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"}>} Cantidad),
+                Centro, ProductoMovimiento)) >= 0.05, Centro))
+```
