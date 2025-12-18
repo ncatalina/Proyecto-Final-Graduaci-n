@@ -15,19 +15,21 @@ En este archivo se detallan las expresiones de Qlik Sense utilizadas para las vi
 ## 1. KPIs Principales
 
 ### Fecha de datos
+Indica al usuario la fecha de corte de la información para contextualizar la vigencia del análisis presentado.
 
 ```qlik
 ='Datos hasta: ' & vFechaMaximaDatos
 ```
 
 ### Centros descuadrados:
-Este indicador cuenta los centros que presentan una desviación mayor o igual a 0.05
+Este indicador identifica y cuantifica los centros que presentan un descuadre menor a -0,05 o mayor a 0,05 para el mes actual
 ```qlik
 =Count(DISTINCT IF(Fabs(
     Aggr(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad), 
     Centro)) >= 0.05, Centro ))
 ```
 ### Cantidad de descuadre MTD:
+Mide el impacto neto acumulado durante el mes en curso
 
 ``` qlik
 =Sum(Aggr( IF((Fabs(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad)) >= 0.05 ),
@@ -35,7 +37,7 @@ Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaxi
 ```
 
 ### Cantidad de descuadre absoluto MTD:
-
+Determina la magnitud total del error logístico, sumando desviaciones positivas y negativas por igual
 ``` qlik
 =Sum(Aggr( IF((Fabs(Sum({1<[Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad) ) >= 0.05 ),
             Fabs( Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"}>} Cantidad) )),
@@ -45,6 +47,7 @@ Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaxi
 ## 2. Gráficos
 
 ### Centro descuadrados por rango:
+Analiza la severidad de las irregularidades clasificando los centros según la cantidad
 
 #### Dimensión
 
@@ -76,6 +79,7 @@ Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaxi
 ```
 
 ### Centros descuadrados por producto Copec:
+Permite visualizar que tipo de producto concentra la mayor cantidad de centros con descuadres
 
 #### Dimensión
 
@@ -92,7 +96,7 @@ Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaxi
 ## 3. Tablas
 
 ### Descuadres por Producto Copec:
-Este indicador cuenta los centros que presentan una desviación mayor o igual a 0.05
+Proporciona un desglose por producto que incluye tendencias de los últimos 14 días y participación sobre el total
 
 #### Columna: Producto Copec
 
@@ -137,6 +141,7 @@ Fabs(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFech
 ```
 
 ### Top 10 centros con mayores descuadres absolutos
+Ranking de los casos más críticos y diagnostica si requiere liquidación o recompra según el signo de la cantidad
 
 #### Columna: Centro
 
