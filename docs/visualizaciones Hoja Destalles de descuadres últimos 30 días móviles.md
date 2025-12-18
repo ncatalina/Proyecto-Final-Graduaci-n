@@ -1,10 +1,10 @@
 # Códigos de visualizaciones - Dashboard Descuadres - Hoja Detalles de descuadres últimos 30 días móviles
 En este archivo se detallan las expresiones de Qlik Sense utilizadas para las visualizaciones.
 
-## 1. Tablas
+## 1. Tablas de Monitoreo crítico
 
 ### Detalle de descuadres consecutivos por Fecha
-Esta tabla alerta la cantidad de centros descuadrados para cada día
+Esta tabla funciona como monitor de carga diaria que identifica peak de irregularidades, permitiendo determinar si existen días especificos donde los procesos logísticos fallaron de manera masiva
 
 #### Columna: 30 días móviles
 
@@ -28,7 +28,7 @@ Esta tabla alerta la cantidad de centros descuadrados para cada día
 ```
 
 ### Detalle de descuadres consecutivos por Centro
-Esta tabla alerta la cantidad de centros descuadrados para cada día
+Detecta la persistencia de errores, su función es alertar sobre centros que mantienen descuadres por tres días seguidos, descartando correcciones automáticas y priorizando casos de negligencia o fallas sistémicas
 
 #### Columna: Centro
 
