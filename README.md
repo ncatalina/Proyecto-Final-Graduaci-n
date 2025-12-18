@@ -20,6 +20,7 @@ Para facilitar la revisión, la lógica de cálculo (Set Analysis y Aggr) se ha 
 * [📖 Detalle Análisis Mensual](docs/visualizaciones%20Hoja%20MTD.md) 
 * [📖 Detalle Análisis Histórico](docs/visualizaciones%20Hoja%20Histórico.md)
 * [📖 Detalle 30 Días Móviles](docs/visualizaciones%20Hoja%20Destalles%20de%20descuadres%20últimos%2030%20días%20móviles.md)
+* [📓 Análisis de Datos (Python/Colab)](notebooks/Modelo_predictivo_descuadres_COPEC.ipynb)
 ---
 
 ## ⚙️ Tecnologías Utilizadas
