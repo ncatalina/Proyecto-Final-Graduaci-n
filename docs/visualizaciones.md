@@ -10,7 +10,7 @@ Este indicador cuenta los centros que presentan una desviación mayor o igual a 
     Aggr(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad), 
     Centro)) >= 0.05, Centro ))
 ```
-## Cantidad de descuadre MTD:
+### Cantidad de descuadre MTD:
 
 ``` qlik
 =Sum(Aggr( IF((Fabs(Sum({1< [Fecha Contable] = {">=$(=MonthStart(vFechaMaximaDatos)) <=$(=vFechaMaximaDatos)"} >} Cantidad)) >= 0.05 ),
