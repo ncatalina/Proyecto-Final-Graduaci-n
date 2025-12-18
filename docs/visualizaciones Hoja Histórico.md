@@ -22,16 +22,19 @@ En este archivo se detallan las expresiones de Qlik Sense utilizadas para las vi
 ## 1. KPIs Principales
 
 ### Centros descuadrados
+Cuantifica la cantidad de centros únicos que han presentado desviaciones fuera del margen de tolerancia (>0,05 0 <-0,05) a lo largo del tiempo
 
 ```qlik
 =Count(DISTINCT Aggr(IF((Sum(Cantidad) > 0.05) OR (Sum(Cantidad) < -0.05), Centro), Centro))
 ```
 ### Cantidad de descuadre
+Calcula el saldo neto acumulado de los descuadres a lo largo del tiempo
 
 ```qlik
 =Sum(Aggr(IF((Fabs(Sum(Cantidad)) >= 0.05), Sum(Cantidad)), Centro ))
 ```
 ### Cantidad de descuadre absoluto
+Mide el volumen total de movimientos, sumando el impacto total de las desviaciones sin compensar saldos positivos y negativos
 
 ```qlik
 =Sum(Aggr(IF((Fabs(Sum(Cantidad)) >= 0.05), Fabs(Sum(Cantidad))), Centro, Material, ProductoMovimiento))
@@ -39,6 +42,7 @@ En este archivo se detallan las expresiones de Qlik Sense utilizadas para las vi
 ## 2. Gráficos
 
 ### Centro descuadrados por rango:
+Clasifica los centros según la magnitud de su descuadre histórico para identificar la severidad
 
 #### Dimensión
 
@@ -58,6 +62,7 @@ En este archivo se detallan las expresiones de Qlik Sense utilizadas para las vi
 ```
 
 ### Centros descuadrados por producto Copec:
+Visualiza la recurrencia de errores en centros por tipo de producto para detectar patrones de falla por categoría a lo largo del tiempo
 
 #### Dimensión
 
@@ -73,7 +78,7 @@ En este archivo se detallan las expresiones de Qlik Sense utilizadas para las vi
 ## 3. Tablas
 
 ### Descuadres por Producto Copec:
-Este indicador cuenta los centros que presentan una desviación mayor o igual a 0.05
+Presenta el detalle histórico por producto, incorporando una comparativa de los últimos 3 meses para el análisis de tendencias de mediano - largo plazo
 
 #### Columna: Producto Copec
 
@@ -109,7 +114,7 @@ Este indicador cuenta los centros que presentan una desviación mayor o igual a 
 ```
 
 ### Top 10 centros con mayores descuadres absolutos
-
+Clasifica los centros con mayor impacto histórico y diagnostica su estado (liquidación o recompra) basándose en el saldo de sus movimientos
 #### Columna: Centro
 
 ```qlik
