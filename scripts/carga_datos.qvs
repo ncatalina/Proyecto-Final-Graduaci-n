@@ -18,64 +18,56 @@ SET DayNames='lun;mar;mié;jue;vie;sáb;dom';
 SET LongDayNames='lunes;martes;miércoles;jueves;viernes;sábado;domingo';
 SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
 
-LIB CONNECT TO 'GDriveInput (e-copec_nsanchez.ap)';
+
+LIB CONNECT TO 'REST_httpsdrive.google.comucexport=download&id=1AsmPQGSkw9QXNy-vuwaxqNK_3xz-99IW (e-copec_nsanchez.ap)';
+
+RestConnectorMasterTable:
+SQL SELECT 
+	"Fecha Contable",
+	"Centro",
+	"Producto Copec",
+	"Material",
+	"Cantidad",
+	"Fecha Version"
+FROM CSV (header on, delimiter ",", quote """") "CSV_source";
 
 [Datos_SAP_Completo_TEMP]:
+LOAD	
 
-SELECT 
     [Fecha Contable],
-    Centro,
+    [Centro],
     [Producto Copec],
-    Material,
-    Cantidad,
-    [Fecha Versión]
-FROM GetSheetValues
-WITH PROPERTIES (
-    spreadsheetKey='11NgXedMukkQHgzjuwBP8QP-CG4s8jE6iORzgvk5HWXg',
-    range='Historico_Consolidado!A:F',
-    valueRenderOption='FORMATTED_VALUE',
-    dateTimeRenderOption='SERIAL_NUMBER',
-    generatedNumberedColumns='false',
-    skipRows=''
-);
+    [Material],
+    Num(Num#(Replace(Text(Cantidad), '.', ','), '#.##0,######', ',')) as Cantidad,
+    [Fecha Version] as [Fecha Versión]
+RESIDENT RestConnectorMasterTable;
 
+DROP TABLE RestConnectorMasterTable;
+
+// Tu lógica de agregación (Exactamente como la tenías)
 [Datos_SAP_Final]:
-NOCONCATENATE 
+NOCONCATENATE 
 LOAD
-    Sum(Cantidad) AS Cantidad,
-    Max(Timestamp([Fecha Versión])) AS [Fecha Versión], 
-    Date(Floor([Fecha Contable])) AS [Fecha Contable],  
-    Centro,
-    Material,
-    If([Producto Copec] = 'TCT' OR [Producto Copec] = 'TAE', 'TCT_TAE', [Producto Copec]) AS ProductoMovimiento 
-
+    Sum(Cantidad) AS Cantidad,
+    Max(Timestamp([Fecha Versión])) AS [Fecha Versión], 
+    Date(Floor([Fecha Contable])) AS [Fecha Contable],  
+    Centro,
+    Material,
+    If([Producto Copec] = 'TCT' OR [Producto Copec] = 'TAE', 'TCT_TAE', [Producto Copec]) AS ProductoMovimiento 
 RESIDENT [Datos_SAP_Completo_TEMP]
-GROUP BY 
-    Date(Floor([Fecha Contable])), 
-    Centro,
-    Material,
-    If([Producto Copec] = 'TCT' OR [Producto Copec] = 'TAE', 'TCT_TAE', [Producto Copec]);
+GROUP BY 
+    Date(Floor([Fecha Contable])), 
+    Centro,
+    Material,
+    If([Producto Copec] = 'TCT' OR [Producto Copec] = 'TAE', 'TCT_TAE', [Producto Copec]);
 
-
+// --- El resto de tu script de Fechas Máximas se mantiene igual ---
 TablaTempMaximaFecha:
-LOAD
-    Max([Fecha Contable]) as MaxFecha
-RESIDENT [Datos_SAP_Final];
-
+LOAD Max([Fecha Contable]) as MaxFecha RESIDENT [Datos_SAP_Final];
 LET vFechaMaximaDatos = Date(Floor(Peek('MaxFecha', 0, 'TablaTempMaximaFecha')));
 
-
 TablaTempMaximaVersion:
-LOAD
-    Max([Fecha Versión]) as MaxVersion
-RESIDENT [Datos_SAP_Final];
-
+LOAD Max([Fecha Versión]) as MaxVersion RESIDENT [Datos_SAP_Final];
 LET vFechaVersion = Timestamp(Peek('MaxVersion', 0, 'TablaTempMaximaVersion'));
 
-DROP TABLES TablaTempMaximaFecha, TablaTempMaximaVersion;
-
-DROP TABLE [Datos_SAP_Completo_TEMP];
-
-
-
-
+DROP TABLES TablaTempMaximaFecha, TablaTempMaximaVersion, [Datos_SAP_Completo_TEMP];
