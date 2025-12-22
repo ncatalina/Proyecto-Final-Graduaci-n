@@ -29,7 +29,7 @@ SQL SELECT
 	"Material",
 	"Cantidad",
 	"Fecha Version"
-FROM CSV (header on, delimiter ",", quote """") "CSV_source";
+FROM CSV (header on, delimiter ";", quote """") "CSV_source";
 
 [Datos_SAP_Completo_TEMP]:
 LOAD	
@@ -38,13 +38,20 @@ LOAD
     [Centro],
     [Producto Copec],
     [Material],
-    Num(Num#(Replace(Text(Cantidad), '.', ','), '#.##0,######', ',')) as Cantidad,
+    Num(
+        Num#(
+            IF(WildMatch(Cantidad, '0.*', '-0.*'), 
+                Replace(Cantidad, '.', ','), 
+                Replace(Text(Cantidad), '.', ',')
+            ), 
+            '#,##########'
+        )
+    ) as Cantidad,
     [Fecha Version] as [Fecha Versión]
 RESIDENT RestConnectorMasterTable;
 
 DROP TABLE RestConnectorMasterTable;
 
-// Tu lógica de agregación (Exactamente como la tenías)
 [Datos_SAP_Final]:
 NOCONCATENATE 
 LOAD
@@ -61,7 +68,6 @@ GROUP BY
     Material,
     If([Producto Copec] = 'TCT' OR [Producto Copec] = 'TAE', 'TCT_TAE', [Producto Copec]);
 
-// --- El resto de tu script de Fechas Máximas se mantiene igual ---
 TablaTempMaximaFecha:
 LOAD Max([Fecha Contable]) as MaxFecha RESIDENT [Datos_SAP_Final];
 LET vFechaMaximaDatos = Date(Floor(Peek('MaxFecha', 0, 'TablaTempMaximaFecha')));
