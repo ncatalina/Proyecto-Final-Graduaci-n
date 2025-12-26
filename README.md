@@ -8,9 +8,9 @@ Este repositorio contiene el desarrollo técnico de un Dashboard en Qlik Sense d
 
 ## Visualización del Dashboard
 Aquí puedes ver cómo luce el producto final:
-* [Ver Hoja Mensual (MTD)](./imagenes%20dashboard/Dashboard%20Descuadres%20-%20Hoja%20MTD.pdf)
-* [Ver Hoja Histórica](./imagenes%20dashboard/Dashboard%20Descuadres-%20Hoja%20Historico.pdf)
-* [Ver Detalle 30 Días](./imagenes%20dashboard/Dashboard%20Descuadres%20-%20Detalle.pdf)
+* [Ver Hoja Mensual (MTD)](./imagenes%20dashboard/Hoja%20dashboard%20descuadre%20mensual.png)
+* [Ver Hoja Histórica](./imagenes%20dashboard/Hoja%20dashboard%20descuadre%20historico.png)
+* [Ver Detalle 30 Días](./imagenes%20dashboard/Hoja%20dashboard%20detalle.png)
 
 ---
 
