@@ -8,20 +8,20 @@ Este repositorio contiene el desarrollo técnico de un Dashboard en Qlik Sense d
 
 ## Visualización del Dashboard
 Aquí puedes ver cómo luce el producto final:
-* [Ver Hoja Mensual (MTD)](imagenes/Dashboard%20Descuadres%20-%20Hoja%20MTD.pdf)
-* [Ver Hoja Histórica](imagenes/Dashboard%20Descuadres-%20Hoja%20Historico.pdf)
-* [Ver Detalle 30 Días](imagenes/Dashboard%20Descuadres%20-%20Detalle.pdf)
+* [Ver Hoja Mensual (MTD)](./imagenes%20dashboard/Dashboard%20Descuadres%20-%20Hoja%20MTD.pdf)
+* [Ver Hoja Histórica](./imagenes%20dashboard/Dashboard%20Descuadres-%20Hoja%20Historico.pdf)
+* [Ver Detalle 30 Días](./imagenes%20dashboard/Dashboard%20Descuadres%20-%20Detalle.pdf)
 
 ---
 
 ## Documentación Técnica y Fórmulas
 Para facilitar la revisión se ha dividido según las hojas del dashboard:
 
-* [Scripts de recolección de datos](scripts recolección de datos)
-* [Detalle Análisis Mensual](códigos visualizaciones dashboard/visualizaciones%20Hoja%20MTD.md) 
-* [Detalle Análisis Histórico](códigos visualizaciones dashboard/visualizaciones%20Hoja%20Histórico.md)
-* [Detalle 30 Días Móviles](códigos visualizaciones dashboard/visualizaciones%20Hoja%20Destalles%20de%20descuadres%20últimos%2030%20días%20móviles.md)
-* [Análisis de Datos (Python/Colab)](notebook Colab/Modelo_predictivo_descuadres_COPEC.ipynb)
+* [Scripts de recolección de datos](./scripts%20recolección%20de%20datos)
+* [Detalle Análisis Mensual](./códigos%20visualizaciones%20dashboard/visualizaciones%20Hoja%20MTD.md) 
+* [Detalle Análisis Histórico](./códigos%20visualizaciones%20dashboard/visualizaciones%20Hoja%20Histórico.md)
+* [Detalle 30 Días Móviles](./códigos%20visualizaciones%20dashboard/visualizaciones%20Hoja%20Destalles%20de%20descuadres%20últimos%2030%20días%20móviles.md)
+* [Análisis de Datos (Python/Colab)](./notebook%20Colab/Modelo_predictivo_descuadres_COPEC.ipynb)
 
 ---
 
