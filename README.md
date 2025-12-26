@@ -17,10 +17,12 @@ Aquí puedes ver cómo luce el producto final:
 ## Documentación Técnica y Fórmulas
 Para facilitar la revisión se ha dividido según las hojas del dashboard:
 
-* [Detalle Análisis Mensual](docs/visualizaciones%20Hoja%20MTD.md) 
-* [Detalle Análisis Histórico](docs/visualizaciones%20Hoja%20Histórico.md)
-* [Detalle 30 Días Móviles](docs/visualizaciones%20Hoja%20Destalles%20de%20descuadres%20últimos%2030%20días%20móviles.md)
-* [Análisis de Datos (Python/Colab)](notebooks/Modelo_predictivo_descuadres_COPEC.ipynb)
+* [Scripts de recolección de datos](scripts recolección de datos)
+* [Detalle Análisis Mensual](códigos visualizaciones dashboard/visualizaciones%20Hoja%20MTD.md) 
+* [Detalle Análisis Histórico](códigos visualizaciones dashboard/visualizaciones%20Hoja%20Histórico.md)
+* [Detalle 30 Días Móviles](códigos visualizaciones dashboard/visualizaciones%20Hoja%20Destalles%20de%20descuadres%20últimos%2030%20días%20móviles.md)
+* [Análisis de Datos (Python/Colab)](notebook Colab/Modelo_predictivo_descuadres_COPEC.ipynb)
+
 ---
 
 ## Tecnologías Utilizadas
