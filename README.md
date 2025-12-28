@@ -21,7 +21,7 @@ Para facilitar la revisión se ha dividido según las hojas del dashboard:
 * [Detalle Análisis Mensual](./códigos%20visualizaciones%20dashboard/visualizaciones%20Hoja%20MTD.md) 
 * [Detalle Análisis Histórico](./códigos%20visualizaciones%20dashboard/visualizaciones%20Hoja%20Histórico.md)
 * [Detalle 30 Días Móviles](./códigos%20visualizaciones%20dashboard/visualizaciones%20Hoja%20Destalles%20de%20descuadres%20últimos%2030%20días%20móviles.md)
-* [Análisis de Datos (Python/Colab)](./Modelo%20predictivo%20descuadres%20V001%20v1.2.ipynb%20-%20Colab.pdf)
+* [Análisis de Datos (Python/Colab)](./Proyecto-Final-Graduaci-n/notebook%20Colab/Modelo%20predictivo%20descuadres%20V001%20v1.2.ipynb%20-%20Colab.pdf)
 
 ---
 
