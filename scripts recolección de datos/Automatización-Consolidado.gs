@@ -1,4 +1,3 @@
-
 const ID_CARPETA_ORIGEN = '1Ch0SEGf_w4RILqfLp4Di5VFL17BmKOwJ'; 
 const NOMBRE_ARCHIVO_CSV = "Historico_Consolidado_Copec.csv"; 
 const NOMBRE_ARCHIVO_CONTROL = "Control_Versiones.json";
@@ -6,11 +5,12 @@ const NOMBRE_ARCHIVO_CONTROL = "Control_Versiones.json";
 function consolidarHaciaCSV() {
   const carpeta = DriveApp.getFolderById(ID_CARPETA_ORIGEN);
   const control = obtenerControlVersiones(carpeta);
+  
   const archivosMaestros = identificarArchivosMaestros(carpeta);
   const mesesEnCarpeta = Object.keys(archivosMaestros).sort();
 
   if (mesesEnCarpeta.length === 0) {
-    Logger.log(' No se encontraron archivos SAP_YYYYMMDD.');
+    Logger.log('No se encontraron archivos válidos con formato SAP_YYYYMMDD_HHMMSS_DD-MM-YYYY.');
     return;
   }
 
@@ -24,10 +24,15 @@ function consolidarHaciaCSV() {
     const info = archivosMaestros[mesClave];
     const reg = control[mesClave];
 
-    if (!reg || info.ts > reg.timestamp || mesClave === mesActualClave) {
+    if (!reg || info.versionNum > reg.versionNum || mesClave === mesActualClave) {
+      Logger.log(`Procesando datos de: ${mesClave}`);
+      Logger.log(`Archivo maestro (Versión más reciente): ${info.nombre}`);
       
-      Logger.log(`PROCESANDO MES: ${mesClave}`);
-      Logger.log(`Archivo Maestro detectado: ${info.nombre}`);
+      if (mesClave !== mesActualClave) {
+        Logger.log(`Detectado como actualización de HISTÓRICO.`);
+      } else {
+        Logger.log(`Detectado como actualización de MTD (Mes en curso).`);
+      }
 
       const totalAntes = lineasCSV.length;
       lineasCSV = lineasCSV.filter(linea => {
@@ -36,19 +41,18 @@ function consolidarHaciaCSV() {
       });
       
       const filasEliminadas = totalAntes - lineasCSV.length;
-      if (filasEliminadas > 0) {
-        Logger.log(` LIMPIEZA: Se eliminaron ${filasEliminadas} filas antiguas de la versión anterior.`);
-      }
+      Logger.log(`LIMPIEZA: Se eliminaron ${filasEliminadas} filas del mes ${mesClave} para reemplazarlas.`);
 
       const nuevasFilas = extraerDatosDeArchivo(info.id, info.ts);
       lineasCSV = lineasCSV.concat(nuevasFilas);
       
-      Logger.log(`ACTUALIZACIÓN: Se agregaron ${nuevasFilas.length} filas desde el archivo más reciente.`);
+      Logger.log(`ACTUALIZACIÓN: Se agregaron ${nuevasFilas.length} filas nuevas.`);
 
       control[mesClave] = {
         fileId: info.id,
         fileName: info.nombre,
         timestamp: info.ts,
+        versionNum: info.versionNum, 
         fechaProceso: new Date().toLocaleString()
       };
       huboCambios = true;
@@ -62,34 +66,46 @@ function consolidarHaciaCSV() {
     guardarControlVersiones(carpeta, control);
     Logger.log(`PROCESO FINALIZADO: El CSV ahora tiene ${lineasCSV.length} filas en total.`);
   } else {
-    Logger.log('TODO AL DÍA: No hay archivos nuevos y el MTD ya está actualizado.');
+    Logger.log('TODO AL DÍA: No hay versiones nuevas para procesar.');
   }
 }
 
+
+function identificarArchivosMaestros(carpeta) {
+  const maestros = {};
+  const archivos = carpeta.getFiles();
+  
+  while (archivos.hasNext()) {
+    const a = archivos.next();
+    const nombre = a.getName();
+
+    const match = nombre.match(/SAP_(\d{8})_(\d{6})_(\d{2})-(\d{2})-(\d{4})/);
+    
+    if (!match) continue;
+
+    const mesDatosClave = `${match[5]}-${match[4]}`; 
+
+    const versionNum = parseInt(match[1] + match[2]);
+
+    if (!maestros[mesDatosClave] || versionNum > maestros[mesDatosClave].versionNum) {
+      maestros[mesDatosClave] = {
+        id: a.getId(),
+        nombre: nombre,
+        versionNum: versionNum,
+        ts: a.getLastUpdated().getTime()
+      };
+    }
+  }
+  return maestros;
+}
 
 function extraerMesUniversal(texto) {
   if (!texto) return null;
   const partes = texto.split('-');
   if (partes.length < 3) return null;
-  if (partes[0].length === 4) return `${partes[0]}-${partes[1]}`;
-  if (partes[2].length >= 4) return `${partes[2].substring(0,4)}-${partes[1]}`;
+  if (partes[0].length === 4) return `${partes[0]}-${partes[1]}`; 
+  if (partes[2].length >= 4) return `${partes[2].substring(0,4)}-${partes[1]}`; 
   return null;
-}
-
-function identificarArchivosMaestros(carpeta) {
-  const maestros = {};
-  const archivos = carpeta.getFiles();
-  while (archivos.hasNext()) {
-    const a = archivos.next();
-    const m = a.getName().match(/SAP_(\d{4})(\d{2})(\d{2})/);
-    if (!m) continue;
-    const mesClave = `${m[1]}-${m[2]}`;
-    const ts = a.getLastUpdated().getTime();
-    if (!maestros[mesClave] || ts > maestros[mesClave].ts) {
-      maestros[mesClave] = { id: a.getId(), ts: ts, nombre: a.getName() };
-    }
-  }
-  return maestros;
 }
 
 function extraerDatosDeArchivo(id, ts) {
@@ -103,7 +119,8 @@ function extraerDatosDeArchivo(id, ts) {
     idTemp = conv.id;
   }
 
-  const datos = SpreadsheetApp.open(excel).getSheets()[0].getDataRange().getValues();
+  const ss = SpreadsheetApp.open(excel);
+  const datos = ss.getSheets()[0].getDataRange().getValues();
   const encabezados = datos[0];
   const fVersion = Utilities.formatDate(new Date(ts), Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
   
